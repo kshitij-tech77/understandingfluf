@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:testapp/utilis/routes.dart';
 
-import '../utilis/routes.dart';
-
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  String name = ""; //review
+  bool changeButoom = false; //review
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +27,19 @@ class LoginPage extends StatelessWidget {
               height: 20,
               //child: Text("welcome kshitij"),
             ),
-            const Text("Welcome",
-                style: TextStyle(
+            Text("Welcome $name ",
+                style: const TextStyle(
                   fontSize: 34,
                 )),
             Column(
               children: [
                 TextFormField(
-                  decoration: const InputDecoration(
-                      hintText: "Enter User name", labelText: "Username"),
-                ),
+                    decoration: const InputDecoration(
+                        hintText: "Enter User name", labelText: "Username"),
+                    onChanged: (value) {
+                      name = value;
+                      setState(() {});
+                    }),
                 const Padding(
                     padding:
                         EdgeInsets.symmetric(vertical: 8.0, horizontal: 10)),
@@ -41,16 +51,51 @@ class LoginPage extends StatelessWidget {
               ],
             ),
             const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-            ElevatedButton(
-              onPressed: () {
+
+            InkWell(
+              onTap: () async {
+                setState(() {
+                  //review
+                  changeButoom = true; //review
+                });
+                await Future.delayed(const Duration(
+                    seconds:
+                        4)); //wait for this 8 second and take me to next page
                 Navigator.pushNamed(context, MyRoutes.homeRoute);
               },
-              style: TextButton.styleFrom(minimumSize: const Size(100, 40)),
-              child: const Text(
-                "login",
-                textScaleFactor: 1.30,
-              ),
-            ),
+              child: AnimatedContainer(
+                  duration: const Duration(
+                      seconds:
+                          5), //Basically this is saying take one second and do some animations
+                  height: 50,
+                  width: changeButoom ? 50 : 150,
+                  //color: Colors.pink,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    // shape: changeButoom ? BoxShape.circle : BoxShape.rectangle,
+                    borderRadius:
+                        BorderRadius.circular(changeButoom ? 50 : 10), //review
+                    color: Colors.pink,
+                  ),
+                  child: changeButoom
+                      ? const Icon(Icons.done, color: Colors.white) //review
+                      : const Text(
+                          "login",
+                          textScaleFactor: 1.50,
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        )),
+            )
+            // ElevatedButton(
+            //  onPressed: () {
+            //   Navigator.pushNamed(context, MyRoutes.homeRoute);
+            // },
+            // style: TextButton.styleFrom(minimumSize: const Size(100, 40)),
+            // child: const Text(
+            //   "login",
+            //textScaleFactor: 1.30,
+            // ),
+            // ),
           ],
         ),
       ),
